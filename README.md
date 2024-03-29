@@ -1,5 +1,5 @@
 # BalatroOlympus
-Mod for the game Balatro adding Greek mythology based Jokers
+Mod for the game Balatro adding Greek mythology based Jokers, made using Steamodded
 
 Current Progress (2/?)
 
@@ -10,7 +10,7 @@ Artemis: adds a "The Moon" Tarot card when Blind is selected.
 
 Apollo: adds a "The Sun" Tarot card when Blind is selected.
 
-~work in progress~
+~work in progress below~
 
 Hephaestus: converts every scored card into a steel card
 
