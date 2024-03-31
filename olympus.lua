@@ -117,6 +117,24 @@ function SMODS.INIT.Olympus()
         }
     });
 
+    add_item(MOD_ID, "Joker", "j_hephaestus", {
+        unlocked = true,
+        discovered = true,
+        rarity = 3,
+        cost = 8,
+        name = "Hephaestus",
+        set = "Joker",
+        config = {
+            extra = nil,
+        }
+    }, {
+        name = "Hephaestus",
+        text = {
+            "All cards become {C:attention}Steel{} cards",
+            "when scored"
+        }
+    });
+
     -- Apply our changes
     refresh_items();
 end
@@ -125,11 +143,9 @@ local calculate_jokerref = Card.calculate_joker;
 function Card:calculate_joker(context)
     local ret_val = calculate_jokerref(self, context);
     if self.ability.set == "Joker" and not self.debuff then
-        --if context.cardarea == G.jokers then
-         --   if context.before then end
-         --   if context.joker_main then
+        
         if context.setting_blind and not self.getting_sliced then
-            if self.ability.name == 'Artemis' and not (context.blueprint_card or self).getting_sliced and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then --check if there is space to create tarot card
+            if self.ability.name == 'Artemis' and not self.getting_sliced and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then --check if there is space to create tarot card
                 G.E_MANAGER:add_event(Event({
                     func = (function()
                         G.E_MANAGER:add_event(Event({
@@ -144,7 +160,8 @@ function Card:calculate_joker(context)
                         return true
                     end)}))
             end
-            if self.ability.name == 'Apollo' and not (context.blueprint_card or self).getting_sliced and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then --check if there is space to create tarot card
+
+            if self.ability.name == 'Apollo' and not self.getting_sliced and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then --check if there is space to create tarot card
                 G.E_MANAGER:add_event(Event({
                     func = (function()
                         G.E_MANAGER:add_event(Event({
@@ -160,6 +177,21 @@ function Card:calculate_joker(context)
                     end)}))
             end
         
+        end
+
+        if context.individual then
+            if context.cardarea == G.play then
+                if self.ability.name == 'Hephaestus' and not context.blueprint then
+                    
+                    context.other_card:set_ability(G.P_CENTERS.m_steel, nil, true)
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            self:juice_up()
+                            return true
+                        end}))
+                                              
+                end
+            end
         end
     end
     return ret_val;
