@@ -195,9 +195,44 @@ function Card:calculate_joker(context)
                         return true
                     end)}))
             end
+
         
         end
+        if context.other_joker then
+            if self.ability.name == 'Artemis' and context.other_joker.ability.name == 'Apollo' and self ~= context.other_joker then
+                local suits = {
+                    ['Hearts'] = 0,
+                    ['Diamonds'] = 0,
+                    ['Spades'] = 0,
+                    ['Clubs'] = 0
+                }
+                for i = 1, #context.scoring_hand do
+                    if context.scoring_hand[i].ability.name ~= 'Wild Card' then
+                        if context.scoring_hand[i]:is_suit('Hearts') then suits["Hearts"] = suits["Hearts"] + 1 end
+                        if context.scoring_hand[i]:is_suit('Diamonds') then suits["Diamonds"] = suits["Diamonds"] + 1 end
+                        if context.scoring_hand[i]:is_suit('Spades') then suits["Spades"] = suits["Spades"] + 1 end
+                        if context.scoring_hand[i]:is_suit('Clubs') then suits["Clubs"] = suits["Clubs"] + 1 end
+                    end
+                end
+                for i = 1, #context.scoring_hand do
+                    if context.scoring_hand[i].ability.name == 'Wild Card' then
+                        if context.scoring_hand[i]:is_suit('Clubs') and suits["Clubs"] == 0 then suits["Clubs"] = suits["Clubs"] + 1
+                        elseif context.scoring_hand[i]:is_suit('Diamonds') and suits["Diamonds"] == 0  then suits["Diamonds"] = suits["Diamonds"] + 1
+                        elseif context.scoring_hand[i]:is_suit('Spades') and suits["Spades"] == 0  then suits["Spades"] = suits["Spades"] + 1
+                        elseif context.scoring_hand[i]:is_suit('Hearts') and suits["Hearts"] == 0  then suits["Hearts"] = suits["Hearts"] + 1 end
+                    end
+                end
+                if suits["Hearts"] > 0 and
+                suits["Clubs"] > 0 then
+                    return {
+                        message = localize{type='variable',key='a_xmult',vars={5}},
+                        Xmult_mod = 5
+                    }
+                end
+            end
 
+        end
+        
         if context.individual then
             if context.cardarea == G.play then
                 if self.ability.name == 'Hephaestus' and not context.blueprint then
@@ -211,8 +246,7 @@ function Card:calculate_joker(context)
                 end
                 if self.ability.name == 'Hades' and #context.full_hand == 1 
                 and G.GAME.current_round.hands_played == 0 then
-                    --local cards_destroyed = {}
-                    --destroyed_cards[#destroyed_cards + 1] = G.play
+                    
                     ease_dollars(self.ability.extra)
                     G.E_MANAGER:add_event(Event({
                         trigger = 'after',
@@ -227,21 +261,7 @@ function Card:calculate_joker(context)
             end
         end
 
-        --if context.destroying_card then
-           --[[ if self.ability.name == 'Hades' and #context.full_hand == 1 
-            and G.GAME.current_round.hands_played == 0 then
-                --local cards_destroyed = {}
-                --destroyed_cards[#destroyed_cards + 1] = G.play
-                ease_dollars(self.ability.extra)
-                G.E_MANAGER:add_event(Event({
-                    trigger = 'after',
-                    delay = 0.2,
-                    func = function() 
-                    context.other_card:start_dissolve()
-                    return true end }))
-
-            end--]]
-        --end
+        
     end
     return ret_val;
 end                    
