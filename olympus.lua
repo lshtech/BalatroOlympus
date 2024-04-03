@@ -135,6 +135,25 @@ function SMODS.INIT.Olympus()
         }
     });
 
+    add_item(MOD_ID, "Joker", "j_hades", {
+        unlocked = true,
+        discovered = true,
+        rarity = 2,
+        cost = 5,
+        name = "Hades",
+        set = "Joker",
+        config = {
+            extra = 3,
+        }
+    }, {
+        name = "Hades",
+        text = {
+            "If {C:attention}first hand{} of round",
+            "has only {C:attention}1{} card, destroy",
+            "it and earn {C:money}$3{}"
+        }
+    });
+
     -- Apply our changes
     refresh_items();
 end
@@ -189,10 +208,40 @@ function Card:calculate_joker(context)
                             self:juice_up()
                             return true
                         end}))
-                                              
                 end
+                if self.ability.name == 'Hades' and #context.full_hand == 1 
+                and G.GAME.current_round.hands_played == 0 then
+                    --local cards_destroyed = {}
+                    --destroyed_cards[#destroyed_cards + 1] = G.play
+                    ease_dollars(self.ability.extra)
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.2,
+                        func = function() 
+                        context.other_card:start_dissolve()
+                        return true end }))
+    
+                end
+                                            
+                
             end
         end
+
+        --if context.destroying_card then
+           --[[ if self.ability.name == 'Hades' and #context.full_hand == 1 
+            and G.GAME.current_round.hands_played == 0 then
+                --local cards_destroyed = {}
+                --destroyed_cards[#destroyed_cards + 1] = G.play
+                ease_dollars(self.ability.extra)
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.2,
+                    func = function() 
+                    context.other_card:start_dissolve()
+                    return true end }))
+
+            end--]]
+        --end
     end
     return ret_val;
 end                    
