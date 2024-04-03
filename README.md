@@ -1,7 +1,9 @@
 # BalatroOlympus
-Mod for the game Balatro adding Greek mythology based Jokers, made using Steamodded
+Mod for the game Balatro adding Greek mythology based Jokers, made using Steamodded.
 
 Current Progress (4/?)
+
+Every Joker is planned to have a synergy with every other Joker.
 
 I am not an artist, so the art is very rudimentary. Get in touch if you want to improve it.
 
@@ -31,3 +33,9 @@ Poseidon:
 Dionysus:
 
 Demeter:
+
+# Synergies (bonus is applied to the first listed Joker):
+
+The Twins (Artemis + Apollo): if both Artemis and Apollo Jokers are owned, x5 Mult if played hand has a scoring Club card and a scoring Heart card. 
+
+
