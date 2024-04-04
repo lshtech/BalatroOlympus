@@ -232,7 +232,8 @@ function Card:calculate_joker(context)
             end
 
         end
-        
+
+
         if context.individual then
             if context.cardarea == G.play then
                 if self.ability.name == 'Hephaestus' and not context.blueprint then
@@ -254,6 +255,9 @@ function Card:calculate_joker(context)
                         func = function() 
                         context.other_card:start_dissolve()
                         return true end }))
+                    for i = 1, #G.jokers.cards do
+                        G.jokers.cards[i]:calculate_joker({remove_playing_cards = true, removed = context.other_card})
+                    end
     
                 end
                                             
