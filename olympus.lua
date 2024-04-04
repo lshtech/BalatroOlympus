@@ -154,6 +154,24 @@ function SMODS.INIT.Olympus()
         }
     });
 
+    add_item(MOD_ID, "Joker", "j_hera", {
+        unlocked = true,
+        discovered = true,
+        rarity = 2,
+        cost = 6,
+        name = "Hera",
+        set = "Joker",
+        config = {
+            extra = 13,
+        }
+    }, {
+        name = "Hera",
+        text = {
+            "Each played {C:attention}Queen{}",
+            "gives {C:mult}+13{} Mult when scored"
+        }
+    });
+
     -- Apply our changes
     refresh_items();
 end
@@ -259,6 +277,14 @@ function Card:calculate_joker(context)
                         G.jokers.cards[i]:calculate_joker({remove_playing_cards = true, removed = context.other_card})
                     end
     
+                end
+
+                if self.ability.name == 'Hera' and 
+                context.other_card:get_id() == 12 then
+                    return {
+                        mult = self.ability.extra,
+                        card = self
+                    }
                 end
                                             
                 
