@@ -1,7 +1,7 @@
 # BalatroOlympus
 Mod for the game Balatro adding Greek mythology based Jokers, made using Steamodded.
 
-Current Progress (4/?)
+Current Progress (5/?)
 
 Every Joker is planned to have a synergy with every other Joker.
 
