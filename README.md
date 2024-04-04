@@ -14,7 +14,9 @@ Apollo (Rare): adds a "The Sun" Tarot card when Blind is selected.
 
 Hephaestus (Rare): all cards become Steel cards when scored.
 
-Hades (Uncommon):  if first hand of round has only 1 card, destroy it and earn $3
+Hades (Uncommon):  if first hand of round has only 1 card, destroy it and earn $3.
+
+Hera (Uncommon): every played Queen gives +13 Mult when scored.
 
 ~work in progress below~
 
