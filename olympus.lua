@@ -172,6 +172,24 @@ function SMODS.INIT.Olympus()
         }
     });
 
+    add_item(MOD_ID, "Joker", "j_zeus", {
+        unlocked = true,
+        discovered = true,
+        rarity = 2,
+        cost = 6,
+        name = "Zeus",
+        set = "Joker",
+        config = {
+            extra = 13,
+        }
+    }, {
+        name = "Zeus",
+        text = {
+            "Each played {C:attention}King{}",
+            "gives {C:mult}+13{} Mult when scored"
+        }
+    });
+
     -- Apply our changes
     refresh_items();
 end
@@ -216,41 +234,7 @@ function Card:calculate_joker(context)
 
         
         end
-        if context.other_joker then
-            if self.ability.name == 'Artemis' and context.other_joker.ability.name == 'Apollo' and self ~= context.other_joker then
-                local suits = {
-                    ['Hearts'] = 0,
-                    ['Diamonds'] = 0,
-                    ['Spades'] = 0,
-                    ['Clubs'] = 0
-                }
-                for i = 1, #context.scoring_hand do
-                    if context.scoring_hand[i].ability.name ~= 'Wild Card' then
-                        if context.scoring_hand[i]:is_suit('Hearts') then suits["Hearts"] = suits["Hearts"] + 1 end
-                        if context.scoring_hand[i]:is_suit('Diamonds') then suits["Diamonds"] = suits["Diamonds"] + 1 end
-                        if context.scoring_hand[i]:is_suit('Spades') then suits["Spades"] = suits["Spades"] + 1 end
-                        if context.scoring_hand[i]:is_suit('Clubs') then suits["Clubs"] = suits["Clubs"] + 1 end
-                    end
-                end
-                for i = 1, #context.scoring_hand do
-                    if context.scoring_hand[i].ability.name == 'Wild Card' then
-                        if context.scoring_hand[i]:is_suit('Clubs') and suits["Clubs"] == 0 then suits["Clubs"] = suits["Clubs"] + 1
-                        elseif context.scoring_hand[i]:is_suit('Diamonds') and suits["Diamonds"] == 0  then suits["Diamonds"] = suits["Diamonds"] + 1
-                        elseif context.scoring_hand[i]:is_suit('Spades') and suits["Spades"] == 0  then suits["Spades"] = suits["Spades"] + 1
-                        elseif context.scoring_hand[i]:is_suit('Hearts') and suits["Hearts"] == 0  then suits["Hearts"] = suits["Hearts"] + 1 end
-                    end
-                end
-                if suits["Hearts"] > 0 and
-                suits["Clubs"] > 0 then
-                    return {
-                        message = localize{type='variable',key='a_xmult',vars={5}},
-                        Xmult_mod = 5
-                    }
-                end
-            end
-
-        end
-
+        
 
         if context.individual then
             if context.cardarea == G.play then
@@ -286,10 +270,73 @@ function Card:calculate_joker(context)
                         card = self
                     }
                 end
+
+                if self.ability.name == 'Zeus' and 
+                context.other_card:get_id() == 13 then
+                    return {
+                        mult = self.ability.extra,
+                        card = self
+                    }
+                end
                                             
                 
             end
         end
+
+        if context.other_joker then
+            if self.ability.name == 'Artemis' and context.other_joker.ability.name == 'Apollo' and self ~= context.other_joker then
+                local suits = {
+                    ['Hearts'] = 0,
+                    ['Diamonds'] = 0,
+                    ['Spades'] = 0,
+                    ['Clubs'] = 0
+                }
+                for i = 1, #context.scoring_hand do
+                    if context.scoring_hand[i].ability.name ~= 'Wild Card' then
+                        if context.scoring_hand[i]:is_suit('Hearts') then suits["Hearts"] = suits["Hearts"] + 1 end
+                        if context.scoring_hand[i]:is_suit('Diamonds') then suits["Diamonds"] = suits["Diamonds"] + 1 end
+                        if context.scoring_hand[i]:is_suit('Spades') then suits["Spades"] = suits["Spades"] + 1 end
+                        if context.scoring_hand[i]:is_suit('Clubs') then suits["Clubs"] = suits["Clubs"] + 1 end
+                    end
+                end
+                for i = 1, #context.scoring_hand do
+                    if context.scoring_hand[i].ability.name == 'Wild Card' then
+                        if context.scoring_hand[i]:is_suit('Clubs') and suits["Clubs"] == 0 then suits["Clubs"] = suits["Clubs"] + 1
+                        elseif context.scoring_hand[i]:is_suit('Diamonds') and suits["Diamonds"] == 0  then suits["Diamonds"] = suits["Diamonds"] + 1
+                        elseif context.scoring_hand[i]:is_suit('Spades') and suits["Spades"] == 0  then suits["Spades"] = suits["Spades"] + 1
+                        elseif context.scoring_hand[i]:is_suit('Hearts') and suits["Hearts"] == 0  then suits["Hearts"] = suits["Hearts"] + 1 end
+                    end
+                end
+                if suits["Hearts"] > 0 and
+                suits["Clubs"] > 0 then
+                    return {
+                        message = localize{type='variable',key='a_xmult',vars={5}},
+                        Xmult_mod = 5
+                    }
+                end
+            end
+
+            if self.ability.name == 'Zeus' and context.other_joker.ability.name == 'Hera' and self ~= context.other_joker then
+                local ranks = {
+                    ['Queens'] = 0,
+                    ['Kings'] = 0
+                }
+
+
+                for i = 1, #context.scoring_hand do
+                    if context.scoring_hand[i]:get_id() == 12 then ranks["Queens"] = ranks["Queens"] + 1 end
+                    if context.scoring_hand[i]:get_id() == 13 then ranks["Kings"] = ranks["Kings"] + 1 end
+                end
+                if ranks["Queens"] > 0 and
+                ranks["Kings"] > 0 then
+                    return {
+                        message = localize{type='variable',key='a_xmult',vars={3}},
+                        Xmult_mod = 3
+                    }
+                end
+            end
+        end
+
 
         
     end
