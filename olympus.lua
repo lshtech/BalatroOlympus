@@ -366,7 +366,7 @@ local zeus = SMODS.Joker{
 
 if _G["JokerDisplay"] then
 	local jd_def = JokerDisplay.Definitions
-
+    local test = true
     jd_def['j_olymp_apollo'] = {
         text = {
             {
@@ -379,6 +379,7 @@ if _G["JokerDisplay"] then
         calc_function = function (card)
             if next(find_joker("artemis")) then
                 local _, _, scoring_hand = JokerDisplay.evaluate_hand()
+                card.joker_display_values.active = false
                 local has_heart = false
                 local has_club = false
                 for _,card in pairs(scoring_hand) do
@@ -387,11 +388,18 @@ if _G["JokerDisplay"] then
                 end
                 if has_club and has_heart then
                     card.joker_display_values.x_mult = 2.5
+                    card.joker_display_values.active = true
                     return
                 end
             end
             card.joker_display_values.x_mult = 1
-        end
+        end,
+        style_function = function(card, text, reminder_text, extra)
+            if text and text.children[1] then
+                text.children[1].states.visible = card.joker_display_values.active
+            end
+            return false
+        end,
     }
     jd_def['j_olymp_artemis'] = {
         text = {
@@ -405,6 +413,7 @@ if _G["JokerDisplay"] then
         calc_function = function (card)
             if next(find_joker("apollo")) then
                 local _, _, scoring_hand = JokerDisplay.evaluate_hand()
+                card.joker_display_values.active = false
                 local has_heart = false
                 local has_club = false
                 for _,card in pairs(scoring_hand) do
@@ -413,26 +422,34 @@ if _G["JokerDisplay"] then
                 end
                 if has_club and has_heart then
                     card.joker_display_values.x_mult = 2.5
+                    card.joker_display_values.active = true
                     return
                 end
             end
             card.joker_display_values.x_mult = 1
-        end
+        end,
+        style_function = function(card, text, reminder_text, extra)
+            if text and text.children[1] then
+                text.children[1].states.visible = card.joker_display_values.active
+            end
+            return false
+        end,
     }
     jd_def['j_olymp_hera'] = {
         text = {
             { text = " +",                             colour = G.C.MULT },
             { ref_table = "card.joker_display_values", ref_value = "mult",  colour = G.C.MULT,  retrigger_type = "mult" },
-            { text = " " },
+            { text = "" },
             {
                 border_nodes = {
-                    { text = 'X'},
+                    { ref_table = "card.joker_display_values", ref_value = "X"},
                     { ref_table = 'card.joker_display_values', ref_value = 'x_mult', retrigger_type = 'exp' },
-                }
+                },
             }
         },
         calc_function = function (card)
             local _, _, scoring_hand = JokerDisplay.evaluate_hand()
+            card.joker_display_values.active = false
             local has_king = false
             local has_queen = false
             local mult = 0
@@ -445,26 +462,36 @@ if _G["JokerDisplay"] then
             end
             card.joker_display_values.mult = mult
             if has_king and has_queen and next(find_joker("zeus")) then
+                card.joker_display_values.X = "X"
                 card.joker_display_values.x_mult = 1.5
+                card.joker_display_values.active = true
                 return
             end
-            card.joker_display_values.x_mult = 1
-        end
+            card.joker_display_values.x_mult = ""
+            card.joker_display_values.X = ""
+        end,
+        style_function = function(card, text, reminder_text, extra)
+            if text and text.children[4] then
+                text.children[4].states.visible = card.joker_display_values.active
+            end
+            return false
+        end,
     }
     jd_def['j_olymp_zeus'] = {
         text = {
             { text = " +",                             colour = G.C.MULT },
             { ref_table = "card.joker_display_values", ref_value = "mult",  colour = G.C.MULT,  retrigger_type = "mult" },
-            { text = " " },
+            { text = "" },
             {
                 border_nodes = {
-                    { text = 'X'},
+                    { ref_table = "card.joker_display_values", ref_value = "X"},
                     { ref_table = 'card.joker_display_values', ref_value = 'x_mult', retrigger_type = 'exp' },
-                }
+                },
             }
         },
         calc_function = function (card)
             local _, _, scoring_hand = JokerDisplay.evaluate_hand()
+            card.joker_display_values.active = false
             local has_king = false
             local has_queen = false
             local mult = 0
@@ -477,11 +504,20 @@ if _G["JokerDisplay"] then
             end
             card.joker_display_values.mult = mult
             if has_king and has_queen and next(find_joker("hera")) then
+                card.joker_display_values.X = "X"
                 card.joker_display_values.x_mult = 1.5
+                card.joker_display_values.active = true
                 return
             end
-            card.joker_display_values.x_mult = 1
-        end
+            card.joker_display_values.x_mult = ""
+            card.joker_display_values.X = ""
+        end,
+        style_function = function(card, text, reminder_text, extra)
+            if text and text.children[4] then
+                text.children[4].states.visible = card.joker_display_values.active
+            end
+            return false
+        end,
     }
 end
 
