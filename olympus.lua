@@ -364,5 +364,126 @@ local zeus = SMODS.Joker{
 	end,
 }
 
+if _G["JokerDisplay"] then
+	local jd_def = JokerDisplay.Definitions
+
+    jd_def['j_olymp_apollo'] = {
+        text = {
+            {
+                border_nodes = {
+                    { text = 'X'},
+                    { ref_table = 'card.joker_display_values', ref_value = 'x_mult', retrigger_type = 'exp' },
+                }
+            }
+        },
+        calc_function = function (card)
+            if next(find_joker("artemis")) then
+                local _, _, scoring_hand = JokerDisplay.evaluate_hand()
+                local has_heart = false
+                local has_club = false
+                for _,card in pairs(scoring_hand) do
+                    has_club = has_club or card:is_suit("Clubs")
+                    has_heart = has_heart or card:is_suit("Hearts")
+                end
+                if has_club and has_heart then
+                    card.joker_display_values.x_mult = 2.5
+                    return
+                end
+            end
+            card.joker_display_values.x_mult = 1
+        end
+    }
+    jd_def['j_olymp_artemis'] = {
+        text = {
+            {
+                border_nodes = {
+                    { text = 'X'},
+                    { ref_table = 'card.joker_display_values', ref_value = 'x_mult', retrigger_type = 'exp' },
+                }
+            }
+        },
+        calc_function = function (card)
+            if next(find_joker("apollo")) then
+                local _, _, scoring_hand = JokerDisplay.evaluate_hand()
+                local has_heart = false
+                local has_club = false
+                for _,card in pairs(scoring_hand) do
+                    has_club = has_club or card:is_suit("Clubs")
+                    has_heart = has_heart or card:is_suit("Hearts")
+                end
+                if has_club and has_heart then
+                    card.joker_display_values.x_mult = 2.5
+                    return
+                end
+            end
+            card.joker_display_values.x_mult = 1
+        end
+    }
+    jd_def['j_olymp_hera'] = {
+        text = {
+            { text = " +",                             colour = G.C.MULT },
+            { ref_table = "card.joker_display_values", ref_value = "mult",  colour = G.C.MULT,  retrigger_type = "mult" },
+            { text = " " },
+            {
+                border_nodes = {
+                    { text = 'X'},
+                    { ref_table = 'card.joker_display_values', ref_value = 'x_mult', retrigger_type = 'exp' },
+                }
+            }
+        },
+        calc_function = function (card)
+            local _, _, scoring_hand = JokerDisplay.evaluate_hand()
+            local has_king = false
+            local has_queen = false
+            local mult = 0
+            for _,played_card in pairs(scoring_hand) do
+                has_king = has_king or played_card:get_id() == 13
+                has_queen = has_queen or played_card:get_id() == 12
+            end
+            if has_queen then
+                mult = card.ability.extra
+            end
+            card.joker_display_values.mult = mult
+            if has_king and has_queen and next(find_joker("zeus")) then
+                card.joker_display_values.x_mult = 1.5
+                return
+            end
+            card.joker_display_values.x_mult = 1
+        end
+    }
+    jd_def['j_olymp_zeus'] = {
+        text = {
+            { text = " +",                             colour = G.C.MULT },
+            { ref_table = "card.joker_display_values", ref_value = "mult",  colour = G.C.MULT,  retrigger_type = "mult" },
+            { text = " " },
+            {
+                border_nodes = {
+                    { text = 'X'},
+                    { ref_table = 'card.joker_display_values', ref_value = 'x_mult', retrigger_type = 'exp' },
+                }
+            }
+        },
+        calc_function = function (card)
+            local _, _, scoring_hand = JokerDisplay.evaluate_hand()
+            local has_king = false
+            local has_queen = false
+            local mult = 0
+            for _,played_card in pairs(scoring_hand) do
+                has_king = has_king or played_card:get_id() == 13
+                has_queen = has_queen or played_card:get_id() == 12
+            end
+            if has_king then
+                mult = card.ability.extra
+            end
+            card.joker_display_values.mult = mult
+            if has_king and has_queen and next(find_joker("hera")) then
+                card.joker_display_values.x_mult = 1.5
+                return
+            end
+            card.joker_display_values.x_mult = 1
+        end
+    }
+end
+
 ----------------------------------------------
 ------------MOD CODE END----------------------
