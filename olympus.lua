@@ -11,7 +11,7 @@
 
 SMODS.Atlas{
 	key = "apollo",
-	path = "j_apollo.png",
+	path = "apollo.png",
 	px = 71,
 	py = 95,
 }
@@ -88,7 +88,7 @@ local apollo = SMODS.Joker{
 
 SMODS.Atlas{
 	key = "artemis",
-	path = "j_artemis.png",
+	path = "artemis.png",
 	px = 71,
 	py = 95,
 }
@@ -164,7 +164,7 @@ local artemis = SMODS.Joker{
 
 SMODS.Atlas{
 	key = "hades",
-	path = "j_hades.png",
+	path = "hades.png",
 	px = 71,
 	py = 95,
 }
@@ -213,7 +213,7 @@ local hades = SMODS.Joker{
 
 SMODS.Atlas{
 	key = "hephaestus",
-	path = "j_hephaestus.png",
+	path = "hephaestus.png",
 	px = 71,
 	py = 95,
 }
@@ -252,7 +252,7 @@ local hephaestus = SMODS.Joker{
 
 SMODS.Atlas{
 	key = "hera",
-	path = "j_hera.png",
+	path = "hera.png",
 	px = 71,
 	py = 95,
 }
@@ -309,7 +309,7 @@ local hera = SMODS.Joker{
 
 SMODS.Atlas{
 	key = "zeus",
-	path = "j_zeus.png",
+	path = "zeus.png",
 	px = 71,
 	py = 95,
 }
